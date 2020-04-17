@@ -1,12 +1,19 @@
+import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
+import { Text } from 'react-native';
 
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Frequency from './pages/Frequency';
 import Student from './pages/Student';
-import Profile from './pages/Profile';
+import StudentDetail from './pages/Student/Detail';
+import EditStudent from './pages/Student/Edit';
+import Definitions from './pages/Definitions';
+import Registration from './pages/Definitions/Registration';
+
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const Routes = createAppContainer(
   createSwitchNavigator(
@@ -25,18 +32,61 @@ const Routes = createAppContainer(
           },
         }
       ),
-      Home: createBottomTabNavigator(
+      Tabs: createBottomTabNavigator(
         {
-          Home,
-          Student,
-          Frequency,
-          Profile
+          Home: createSwitchNavigator(
+            {
+              Home,
+            },
+          ),
+          Alunos: createSwitchNavigator(
+            {
+              Student,
+              StudentDetail,
+              EditStudent,
+            },
+          ),
+          Chamada: createSwitchNavigator(
+            {
+              Frequency
+            }
+          ),
+          Definitions
+        },
+        {
+          defaultNavigationOptions: ({ navigation }) => ({
+            tabBarIcon: ({ tintColor }) => {
+              const { routeName } = navigation.state;
+              if (routeName === 'Alunos') {
+                return (
+                  <Icon name="contacts" size={30} color={tintColor} />
+                );
+              } else if (routeName === 'Chamada') {
+                return (
+                  <Icon name="bars" size={30} color={tintColor} />
+                );
+              } else {
+                return (
+                  <Icon name="home" size={30} color={tintColor} />
+                );
+              }
+            },
+          }),
+          tabBarOptions: {
+            activeTintColor: '#000',
+            inactiveTintColor: '#b9b9b9',
+          },
         }
+      ),
+      Registration: createStackNavigator(
+        {
+          Registration,
+        },
       ),
     },
     {
       initialRouteName: 'Signin'
-    }
+    },
   )
 
 )

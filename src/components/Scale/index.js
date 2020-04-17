@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, Picker, View, Text } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, View, Text } from 'react-native';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -14,176 +14,183 @@ export default function Scale() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView>
 
-      <View>
+        <View>
 
-        <Text style={styles.title}>
-          Treino realizado
+          <Text style={styles.title}>
+            Treino realizado
       </Text>
 
-        <View style={styles.selectText} >
-          {training ?
-            <Icon name="caretdown" size={20} style={{ paddingHorizontal: 10 }} />
-            :
-            <Icon name="caretright" size={20} style={{ paddingHorizontal: 10 }} />
+          <View style={styles.selectText} >
+            {training ?
+              <Icon name="caretdown" size={20} style={{ paddingHorizontal: 10 }} />
+              :
+              <Icon name="caretright" size={20} style={{ paddingHorizontal: 10 }} />
+            }
+            <Text onPress={() => setTraining(!training)}>
+              Selecione o mês: {month}
+            </Text>
+          </View>
+
+          {training &&
+            <Drawer.Section>
+              <Drawer.Item
+                label="01"
+                active={month === '01'}
+                onPress={() => { setMonth('01'), setTraining(!training) }}
+              />
+              <Drawer.Item
+                label="02"
+                active={month === '02'}
+                onPress={() => { setMonth('02'), setTraining(!training) }}
+              />
+              <Drawer.Item
+                label="03"
+                active={month === '03'}
+                onPress={() => { setMonth('03'), setTraining(!training) }}
+              />
+            </Drawer.Section>
           }
-          <Text onPress={() => setTraining(!training)}>
-            Selecione o mês: {month}
-          </Text>
-        </View>
-
-        {training &&
-          <Drawer.Section>
-            <Drawer.Item
-              label="01"
-              active={month === '01'}
-              onPress={() => { setMonth('01'), setTraining(!training) }}
-            />
-            <Drawer.Item
-              label="02"
-              active={month === '02'}
-              onPress={() => { setMonth('02'), setTraining(!training) }}
-            />
-            <Drawer.Item
-              label="03"
-              active={month === '03'}
-              onPress={() => { setMonth('03'), setTraining(!training) }}
-            />
-          </Drawer.Section>
-        }
 
 
-        <DataTable>
+          <DataTable>
 
-          <DataTable.Header>
-            <DataTable.Title>Data</DataTable.Title>
-            <DataTable.Title>Professor</DataTable.Title>
-            <DataTable.Title numeric>Presentes</DataTable.Title>
-            <DataTable.Title numeric>Faltas</DataTable.Title>
-          </DataTable.Header>
+            <DataTable.Header>
+              <DataTable.Title>Dias</DataTable.Title>
+              <DataTable.Title>Professor</DataTable.Title>
+              <DataTable.Title>Devocional</DataTable.Title>
+              <DataTable.Title numeric>Presentes</DataTable.Title>
+              <DataTable.Title numeric>Faltas</DataTable.Title>
+            </DataTable.Header>
 
-          <DataTable.Row>
-            <DataTable.Cell>15/03/2020</DataTable.Cell>
-            <DataTable.Cell>Emerson</DataTable.Cell>
-            <DataTable.Cell numeric>10</DataTable.Cell>
-            <DataTable.Cell numeric>15</DataTable.Cell>
-          </DataTable.Row>
+            <DataTable.Row>
+              <DataTable.Cell>15</DataTable.Cell>
+              <DataTable.Cell>Emerson</DataTable.Cell>
+              <DataTable.Cell>Emerson</DataTable.Cell>
+              <DataTable.Cell numeric>10</DataTable.Cell>
+              <DataTable.Cell numeric>15</DataTable.Cell>
+            </DataTable.Row>
 
-          <DataTable.Row>
-            <DataTable.Cell>07/03/2020</DataTable.Cell>
-            <DataTable.Cell>Carlos</DataTable.Cell>
-            <DataTable.Cell numeric>8</DataTable.Cell>
-            <DataTable.Cell numeric>7</DataTable.Cell>
-          </DataTable.Row>
+            <DataTable.Row>
+              <DataTable.Cell>07</DataTable.Cell>
+              <DataTable.Cell>Carlos</DataTable.Cell>
+              <DataTable.Cell>Carlos</DataTable.Cell>
+              <DataTable.Cell numeric>8</DataTable.Cell>
+              <DataTable.Cell numeric>7</DataTable.Cell>
+            </DataTable.Row>
 
-          <DataTable.Row>
-            <DataTable.Cell>29/02/2020</DataTable.Cell>
-            <DataTable.Cell>Emerson</DataTable.Cell>
-            <DataTable.Cell numeric>12</DataTable.Cell>
-            <DataTable.Cell numeric>3</DataTable.Cell>
-          </DataTable.Row>
+            <DataTable.Row>
+              <DataTable.Cell>29</DataTable.Cell>
+              <DataTable.Cell>Emerson</DataTable.Cell>
+              <DataTable.Cell>Emerson</DataTable.Cell>
+              <DataTable.Cell numeric>12</DataTable.Cell>
+              <DataTable.Cell numeric>3</DataTable.Cell>
+            </DataTable.Row>
 
-          <DataTable.Row>
-            <DataTable.Cell>22/02/2020</DataTable.Cell>
-            <DataTable.Cell>Emerson</DataTable.Cell>
-            <DataTable.Cell numeric>11</DataTable.Cell>
-            <DataTable.Cell numeric>14</DataTable.Cell>
-          </DataTable.Row>
+            <DataTable.Row>
+              <DataTable.Cell>22</DataTable.Cell>
+              <DataTable.Cell>Emerson</DataTable.Cell>
+              <DataTable.Cell>Emerson</DataTable.Cell>
+              <DataTable.Cell numeric>11</DataTable.Cell>
+              <DataTable.Cell numeric>14</DataTable.Cell>
+            </DataTable.Row>
 
-          {/* <DataTable.Pagination
+            {/* <DataTable.Pagination
           page={1}
           numberOfPages={3}
           onPageChange={(page) => { console.log(page); }}
           label="1-2 of 6"
         /> */}
-        </DataTable>
+          </DataTable>
 
-      </View>
-
-      <Divider />
-
-      <View>
-        <Text style={styles.title}>
-          Escala de treino
-      </Text>
-
-        <View style={styles.selectText} >
-          {scale ?
-            <Icon name="caretdown" size={20} style={{ paddingHorizontal: 10 }} />
-            :
-            <Icon name="caretright" size={20} style={{ paddingHorizontal: 10 }} />
-          }
-          <Text onPress={() => setScale(!scale)}>
-            Selecione o mês: {month}
-          </Text>
         </View>
 
-        {scale &&
-          <Drawer.Section>
-            <Drawer.Item
-              label="01"
-              active={month === '01'}
-              onPress={() => { setMonth('01'), setScale(!scale) }}
-            />
-            <Drawer.Item
-              label="02"
-              active={month === '02'}
-              onPress={() => { setMonth('02'), setScale(!scale) }}
-            />
-            <Drawer.Item
-              label="03"
-              active={month === '03'}
-              onPress={() => { setMonth('03'), setScale(!scale) }}
-            />
-          </Drawer.Section>
-        }
+        <Divider />
 
-        <DataTable>
+        <View>
+          <Text style={styles.title}>
+            Escala de treino
+      </Text>
 
-          <DataTable.Header>
-            <DataTable.Title>Data</DataTable.Title>
-            <DataTable.Title>Professor</DataTable.Title>
-            <DataTable.Title>Devocional</DataTable.Title>
-            <DataTable.Title>Lanche</DataTable.Title>
-          </DataTable.Header>
+          <View style={styles.selectText} >
+            {scale ?
+              <Icon name="caretdown" size={20} style={{ paddingHorizontal: 10 }} />
+              :
+              <Icon name="caretright" size={20} style={{ paddingHorizontal: 10 }} />
+            }
+            <Text onPress={() => setScale(!scale)}>
+              Selecione o mês: {month}
+            </Text>
+          </View>
 
-          <DataTable.Row>
-            <DataTable.Cell>15/03/2020</DataTable.Cell>
-            <DataTable.Cell>Emerson</DataTable.Cell>
-            <DataTable.Cell>Carlos</DataTable.Cell>
-            <DataTable.Cell>Viviane</DataTable.Cell>
-          </DataTable.Row>
+          {scale &&
+            <Drawer.Section>
+              <Drawer.Item
+                label="01"
+                active={month === '01'}
+                onPress={() => { setMonth('01'), setScale(!scale) }}
+              />
+              <Drawer.Item
+                label="02"
+                active={month === '02'}
+                onPress={() => { setMonth('02'), setScale(!scale) }}
+              />
+              <Drawer.Item
+                label="03"
+                active={month === '03'}
+                onPress={() => { setMonth('03'), setScale(!scale) }}
+              />
+            </Drawer.Section>
+          }
 
-          <DataTable.Row>
-            <DataTable.Cell>07/03/2020</DataTable.Cell>
-            <DataTable.Cell>Carlos</DataTable.Cell>
-            <DataTable.Cell>Carlos</DataTable.Cell>
-            <DataTable.Cell>Viviane</DataTable.Cell>
-          </DataTable.Row>
+          <DataTable>
 
-          <DataTable.Row>
-            <DataTable.Cell>29/02/2020</DataTable.Cell>
-            <DataTable.Cell>Emerson</DataTable.Cell>
-            <DataTable.Cell>Carlos</DataTable.Cell>
-            <DataTable.Cell>Leandro</DataTable.Cell>
-          </DataTable.Row>
+            <DataTable.Header>
+              <DataTable.Title>Data</DataTable.Title>
+              <DataTable.Title>Professor</DataTable.Title>
+              <DataTable.Title>Devocional</DataTable.Title>
+              <DataTable.Title>Lanche</DataTable.Title>
+            </DataTable.Header>
 
-          <DataTable.Row>
-            <DataTable.Cell>22/02/2020</DataTable.Cell>
-            <DataTable.Cell>Emerson</DataTable.Cell>
-            <DataTable.Cell>Vanessa</DataTable.Cell>
-            <DataTable.Cell>Viviane</DataTable.Cell>
-          </DataTable.Row>
+            <DataTable.Row>
+              <DataTable.Cell>15/03/2020</DataTable.Cell>
+              <DataTable.Cell>Emerson</DataTable.Cell>
+              <DataTable.Cell>Carlos</DataTable.Cell>
+              <DataTable.Cell>Viviane</DataTable.Cell>
+            </DataTable.Row>
 
-          {/* <DataTable.Pagination
+            <DataTable.Row>
+              <DataTable.Cell>07/03/2020</DataTable.Cell>
+              <DataTable.Cell>Carlos</DataTable.Cell>
+              <DataTable.Cell>Carlos</DataTable.Cell>
+              <DataTable.Cell>Viviane</DataTable.Cell>
+            </DataTable.Row>
+
+            <DataTable.Row>
+              <DataTable.Cell>29/02/2020</DataTable.Cell>
+              <DataTable.Cell>Emerson</DataTable.Cell>
+              <DataTable.Cell>Carlos</DataTable.Cell>
+              <DataTable.Cell>Leandro</DataTable.Cell>
+            </DataTable.Row>
+
+            <DataTable.Row>
+              <DataTable.Cell>22/02/2020</DataTable.Cell>
+              <DataTable.Cell>Emerson</DataTable.Cell>
+              <DataTable.Cell>Vanessa</DataTable.Cell>
+              <DataTable.Cell>Viviane</DataTable.Cell>
+            </DataTable.Row>
+
+            {/* <DataTable.Pagination
           page={1}
           numberOfPages={3}
           onPageChange={(page) => { console.log(page); }}
           label="1-2 of 6"
         /> */}
-        </DataTable>
-      </View>
+          </DataTable>
+        </View>
 
+      </ScrollView>
     </SafeAreaView>
   );
 }

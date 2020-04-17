@@ -1,94 +1,115 @@
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Image, StatusBar, StyleSheet, FlatList, Text, View, CheckBox } from 'react-native';
+import React, { Component } from 'react';
+import { SafeAreaView, StatusBar, StyleSheet, FlatList, Text, View, ScrollView } from 'react-native';
 import { format } from 'date-fns'
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import { DataTable, Button, } from 'react-native-paper';
 
-import logo from "../../assets/logo.png";
 
 import api from "../../services/api";
 
-export default function Frequency() {
-  const [students, setStudents] = useState([]);
-  const [checked, setChecked] = useState(false)
-  const frequency = { id_user: 1, traning_date: format(new Date(), 'dd/MM/yyyy') }
-
-  useEffect(() => {
-    async function loadStudents() {
-      const response = await api.get("/student");
-      let arrayStudent = []
-      response.data.map(student => {
-        const obj = {
-          id: student.id,
-          name: student.name,
-          frequency: false
-        }
-        arrayStudent.push(obj)
-      })
-      setStudents(arrayStudent)
-    }
-    loadStudents();
-  }, []);
-
-  function handleFrequency(student) {
-    const newStudents = students
-    const index = students.indexOf(student)
-    newStudents.splice(index, 1)
-    student.frequency = !student.frequency
-    newStudents.push(student)
-    setStudents([])
-    setStudents(newStudents)
-    alert(JSON.stringify(newStudents))
+export default class Frequency extends Component {
+  state = {
+    students: [],
+    frequencies: [],
+    date: format(new Date(), 'dd/MM/yyyy')
+  };
+  async componentDidMount() {
+    const students = await api.get("/student");
+    let arrayStudent = []
+    students.data.map(student => {
+      const obj = {
+        id: student.id,
+        name: student.name,
+        frequency: false
+      }
+      arrayStudent.push(obj)
+    })
+    const frequencies = await api.get("/frequency");
+    this.setState({ students: arrayStudent, frequencies })
   }
 
-  return (
-    <SafeAreaView>
+  render() {
+    const { students, date } = this.state;
 
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="#FFFF"
-      />
+    const handleFrequency = (student, index) => {
+      let newStudents = this.state.students;
+      newStudents.forEach(item => {
+        if (item === student) {
+          item.frequency = !item.frequency
+        }
+      })
+      this.setState({ students: newStudents })
+    }
 
-      <Image style={styles.logo} source={logo} />
+    const handleSave = async () => {
+      const frequency = this.state.students.map(student => {
+        return { id_user: student.id, training_date: format(new Date(), 'yyyy-MM-dd'), frequency: student.frequency }
+      })
+      const response = await api.post("/frequency", frequency);
+      alert(JSON.stringify(response.data))
+    }
 
-      <View style={styles.title}>
-        <Text>Data da chamada: {format(new Date(), 'dd/MM/yyyy')}</Text>
-      </View>
+    return (
+      <SafeAreaView style={{ backgroundColor: 'white' }}>
 
-      <DataTable>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="#FFFF"
+        />
 
-        <DataTable.Header>
-          <DataTable.Title>Aluno</DataTable.Title>
-          <DataTable.Title numeric>Presença</DataTable.Title>
-        </DataTable.Header>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.title}>
+            <Text>Data da chamada: {date}</Text>
+          </View>
 
-        {students.map(student => (
-          <DataTable.Row onPress={() => alert(student)}>
-            <DataTable.Cell>{student.name}</DataTable.Cell>
-            <DataTable.Cell numeric>
-              {student.frequency ? 'P' : 'F'}
-            </DataTable.Cell>
-          </DataTable.Row>
-        ))}
+          <DataTable>
 
-      </DataTable>
+            <DataTable.Header>
+              <DataTable.Title>Aluno</DataTable.Title>
+              <DataTable.Title numeric>Presença</DataTable.Title>
+            </DataTable.Header>
 
-      <Button icon="content-save" mode="contained" style={{ margin: 10 }} color="red" onPress={() => console.log('Pressed')}>
-        Salvar chamada
-      </Button>
+            <FlatList
+              data={students}
+              keyExtractor={student => student.id}
+              vertical
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item, index }) => (
+                <DataTable.Row onPress={() => handleFrequency(item, index)}>
+                  <DataTable.Cell>{item.name}</DataTable.Cell>
+                  <DataTable.Cell numeric>
+                    {item.frequency ? 'P' : 'F'}
+                  </DataTable.Cell>
+                </DataTable.Row>
+              )}
+            />
 
-    </SafeAreaView>
-  );
+          </DataTable>
+
+          <Button mode="contained" style={{ margin: 10 }} color="red" onPress={() => handleSave()}>
+            Realizar Chamada
+        </Button>
+        </ScrollView>
+      </SafeAreaView >
+    );
+  }
 }
 
 Frequency.navigationOptions = {
+  title: 'Lista de Chamada',
   tabBarLabel: 'Chamada',
-  // eslint-disable-next-line react/prop-types
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="bars" size={30} color={tintColor} />
-  ),
+  headerStyle: {
+    backgroundColor: '#FFF',
+    // paddingTop: Platform.OS === 'android' ? 60 : 500,
+    height: Platform.OS === 'android' ? 50 : 80,
+  },
+  headerTintColor: '#000',
+  headerTitleAlign: 'center',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  },
 };
 
 const styles = StyleSheet.create({
@@ -105,7 +126,7 @@ const styles = StyleSheet.create({
     height: 50,
     resizeMode: "contain",
     alignSelf: "center",
-    margin: 30,
+    marginTop: 30,
   },
   list: {
     margin: 5,
