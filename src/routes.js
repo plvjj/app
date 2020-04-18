@@ -78,7 +78,7 @@ const Routes = createAppContainer(
           },
         }
       ),
-      Registration: createStackNavigator(
+      Registration: createSwitchNavigator(
         {
           Registration,
         },

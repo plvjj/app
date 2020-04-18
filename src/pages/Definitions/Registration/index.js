@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { SafeAreaView, ScrollView, TouchableOpacity, StatusBar, StyleSheet, View, TextInput, Text, Platform, KeyboardAvoidingView } from 'react-native';
+import { BackHandler, SafeAreaView, ScrollView, TouchableOpacity, StatusBar, StyleSheet, View, TextInput, Text, Platform, KeyboardAvoidingView } from 'react-native';
 import { Avatar, Title } from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text'
 import PickerSelect from 'react-native-picker-select';
@@ -26,6 +26,16 @@ export default class Registration extends Component {
     loading: false
   }
 
+  componentDidMount() {
+    BackHandler.addEventListener('backPress', () => {
+      return this.props.navigation.navigate('Definitions');
+    });
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('backPress')
+  }
+
   handleSubmmit = async () => {
     this.setState({ loading: true });
     const resp = await api.post('/student', this.state);
@@ -40,8 +50,11 @@ export default class Registration extends Component {
 
 
   render() {
+    const { navigation } = this.props;
 
-
+    const handleBack = () => {
+      navigation.navigate('Definitions');
+    }
 
     return (
       <SafeAreaView style={{ backgroundColor: '#FFF' }}>
@@ -52,13 +65,28 @@ export default class Registration extends Component {
           textStyle={styles.spinnerTextStyle}
         />
 
+        <View style={{ flexDirection: 'row', height: 50 }}>
+          <TouchableOpacity
+            style={{ width: '85%' }}
+            onPress={handleBack}
+          >
+            <Icon
+              name="arrowleft"
+              size={20}
+              color="#000"
+              style={{ marginLeft: 10, paddingVertical: 20, float: 'left' }}
+            />
+          </TouchableOpacity>
+
+        </View>
+
         <KeyboardAvoidingView
           enabled={Platform.OS === "ios"}
           behavior="padding"
           style={styles.container}
         >
 
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
 
             <StatusBar
               barStyle="dark-content"
@@ -224,6 +252,9 @@ Registration.navigationOptions = ({ navigation }) => ({
 });
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 100,
+  },
   headerContainer: {
     alignItems: 'center',
     marginBottom: 10,
