@@ -1,5 +1,5 @@
 import React, { Component, useEffect } from 'react';
-import { SafeAreaView, Image, StatusBar, StyleSheet, TouchableOpacity, FlatList, View } from 'react-native';
+import { SafeAreaView, Image, StatusBar, StyleSheet, TouchableOpacity, FlatList, View, BackHandler } from 'react-native';
 import IconSimple from 'react-native-vector-icons/SimpleLineIcons';
 import { format } from 'date-fns'
 
@@ -19,10 +19,18 @@ export default class Student extends Component {
   async componentDidMount() {
     const response = await api.get("/student");
     this.setState({ oldStudents: response.data, students: response.data })
+
+    BackHandler.addEventListener('backPress', () => {
+      return this.props.navigation.navigate('Home');
+    });
   }
 
   componentDidUpdate() {
+    BackHandler.removeEventListener('hardwareBackPress');
+  }
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener('backPress')
   }
 
   onChangeSearch = query => {

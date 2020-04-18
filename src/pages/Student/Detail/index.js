@@ -14,6 +14,10 @@ export default class Detail extends Component {
     student: {}
   }
 
+  handleBack = () => {
+    this.props.navigation.navigate('Student');
+  }
+
   async componentDidMount() {
     const { navigation } = this.props;
     const id = navigation.getParam('id');
@@ -21,31 +25,30 @@ export default class Detail extends Component {
     data.birth = format(new Date(data.birth), 'dd/MM/yyyy')
     data.createdAt = format(new Date(data.createdAt), 'dd/MM/yyyy')
     this.setState({ student: data })
+
+    BackHandler.addEventListener('backPress', () => {
+      return this.props.navigation.navigate('Student');
+    });
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('backPress')
   }
 
   render() {
-    const { navigation } = this.props;
     const { student } = this.state;
 
-    BackHandler.addEventListener(
-      'hardwareBackPress',
-      function () {
-        navigation.navigate('Student');
-      }
-    );
-
     const handleEdit = () => {
+      const { navigation } = this.props;
       navigation.navigate('EditStudent', { student });
     }
 
     return (
-      <SafeAreaView style={{ backgroundColor: 'white', marginBottom: 40 }}>
+      <SafeAreaView style={{ backgroundColor: 'white', marginBottom: 40 }} >
         <View style={{ flexDirection: 'row', height: 50 }}>
           <TouchableOpacity
             style={{ width: '85%' }}
-            onPress={() => {
-              navigation.navigate('Student');
-            }}
+            onPress={() => this.handleBack()}
           >
             <Icon
               name="arrowleft"
@@ -136,7 +139,7 @@ export default class Detail extends Component {
             </List.Section>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </SafeAreaView >
     );
   }
 }

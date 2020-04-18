@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { format, parseISO } from 'date-fns';
 
-import { SafeAreaView, ScrollView, TouchableOpacity, StatusBar, StyleSheet, View, TextInput, Text, Platform, KeyboardAvoidingView } from 'react-native';
+import { SafeAreaView, ScrollView, TouchableOpacity, StatusBar, StyleSheet, View, TextInput, Text, Platform, KeyboardAvoidingView, BackHandler } from 'react-native';
 import { Avatar, Title } from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text'
 import PickerSelect from 'react-native-picker-select';
@@ -46,6 +46,14 @@ export default class EditStudent extends Component {
       avatar_id: student.avatar_id,
       note: student.note,
     })
+
+    BackHandler.addEventListener('backPress', () => {
+      return this.props.navigation.navigate('StudentDetail', { id: this.state.id });
+    });
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('backPress')
   }
 
   handleSubmmit = async () => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  SafeAreaView, StatusBar, StyleSheet, FlatList, Text, View, ScrollView, Image, Alert, Modal, Picker
+  SafeAreaView, StatusBar, StyleSheet, FlatList, Text, View, ScrollView, Image, Alert, Modal, Picker, BackHandler
 } from 'react-native';
 import { format } from 'date-fns'
 
@@ -37,6 +37,18 @@ export default class Frequency extends Component {
     })
 
     this.setState({ users: data, students: arrayStudent, frequencies })
+
+    BackHandler.addEventListener('backPress', () => {
+      if (this.state.modalVisible) {
+        return this.setState({ modalVisible: false })
+      } else {
+        return this.props.navigation.navigate('Home');
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('backPress')
   }
 
   render() {
@@ -90,7 +102,7 @@ export default class Frequency extends Component {
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
+            this.setState({ modalVisible: false });
           }}
         >
           <View style={styles.centeredView}>
