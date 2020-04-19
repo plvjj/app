@@ -26,7 +26,7 @@ export default class Registration extends Component {
     loading: false
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     BackHandler.addEventListener('backPress', () => {
       return this.props.navigation.navigate('Definitions');
     });

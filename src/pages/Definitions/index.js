@@ -22,21 +22,23 @@ export default class Definition extends Component {
         />
 
         <Divider />
-        <List.Item
-          style={styles.user}
-          title="Gabriel Dias Cardoso"
-          description="Professor"
-          left={props => <Avatar.Image
-            size={70}
-            source={{ uri: 'https://cdn.pixabay.com/photo/2017/02/09/16/48/brazilian-jiu-jitsu-2052829_960_720.jpg' }}
-          />}
-          right={props => <IconSimple
-            name="arrow-right"
-            size={20}
-            color="#000"
-            style={{ marginRight: 10, paddingVertical: 20 }}
-          />}
-        />
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('User', { id: 9 })}>
+          <List.Item
+            style={styles.user}
+            title="Gabriel Dias Cardoso"
+            description="Professor"
+            left={props => <Avatar.Image
+              size={70}
+              source={{ uri: 'https://cdn.pixabay.com/photo/2017/02/09/16/48/brazilian-jiu-jitsu-2052829_960_720.jpg' }}
+            />}
+            right={props => <IconSimple
+              name="arrow-right"
+              size={20}
+              color="#000"
+              style={{ marginRight: 10, paddingVertical: 20 }}
+            />}
+          />
+        </TouchableOpacity>
         <Divider />
         <List.Section>
           <TouchableOpacity onPress={() => handleNavigate('Registration')}>
@@ -56,51 +58,57 @@ export default class Definition extends Component {
               />}
             />
           </TouchableOpacity>
-          <List.Item
-            title="Adicionar Boletim"
-            left={props => <Icon
-              name="filetext1"
-              size={20}
-              color="#000"
-              style={{ marginRight: 10, paddingVertical: 20 }}
-            />}
-            right={props => <IconSimple
-              name="arrow-right"
-              size={20}
-              color="#000"
-              style={{ marginRight: 10, paddingVertical: 20 }}
-            />}
-          />
-          <List.Item
-            title="Adicionar Escala"
-            left={props => <Icon
-              name="calendar"
-              size={20}
-              color="#000"
-              style={{ marginRight: 10, paddingVertical: 20 }}
-            />}
-            right={props => <IconSimple
-              name="arrow-right"
-              size={20}
-              color="#000"
-              style={{ marginRight: 10, paddingVertical: 20 }}
-            />}
-          />
-          <List.Item
-            title="Adicionar usuário para o app"
-            left={props => <Icon
-              name="adduser"
-              size={20}
-              color="#000"
-              style={{ marginRight: 10, paddingVertical: 20 }}
-            />}
-            right={props => <IconSimple
-              name="arrow-right"
-              size={20}
-              color="#000"
-              style={{ marginRight: 10, paddingVertical: 20 }}
-            />}
-          />
+          <TouchableOpacity onPress={() => handleNavigate('Report')}>
+            <List.Item
+              title="Adicionar Boletim"
+              left={props => <Icon
+                name="filetext1"
+                size={20}
+                color="#000"
+                style={{ marginRight: 10, paddingVertical: 20 }}
+              />}
+              right={props => <IconSimple
+                name="arrow-right"
+                size={20}
+                color="#000"
+                style={{ marginRight: 10, paddingVertical: 20 }}
+              />}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleNavigate('Scale')}>
+            <List.Item
+              title="Adicionar Escala"
+              left={props => <Icon
+                name="calendar"
+                size={20}
+                color="#000"
+                style={{ marginRight: 10, paddingVertical: 20 }}
+              />}
+              right={props => <IconSimple
+                name="arrow-right"
+                size={20}
+                color="#000"
+                style={{ marginRight: 10, paddingVertical: 20 }}
+              />}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleNavigate('User')}>
+            <List.Item
+              title="Adicionar usuário para o app"
+              left={props => <Icon
+                name="adduser"
+                size={20}
+                color="#000"
+                style={{ marginRight: 10, paddingVertical: 20 }}
+              />}
+              right={props => <IconSimple
+                name="arrow-right"
+                size={20}
+                color="#000"
+                style={{ marginRight: 10, paddingVertical: 20 }}
+              />}
+            />
+          </TouchableOpacity>
         </List.Section>
 
       </SafeAreaView >

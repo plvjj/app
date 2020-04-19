@@ -1,8 +1,6 @@
 import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { createStackNavigator } from 'react-navigation-stack';
-import { Text } from 'react-native';
 
 import Login from './pages/Login';
 import Home from './pages/Home';
@@ -12,6 +10,9 @@ import StudentDetail from './pages/Student/Detail';
 import EditStudent from './pages/Student/Edit';
 import Definitions from './pages/Definitions';
 import Registration from './pages/Definitions/Registration';
+import Report from './pages/Definitions/Report';
+import Scale from './pages/Definitions/Scale';
+import User from './pages/Definitions/User';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -51,7 +52,15 @@ const Routes = createAppContainer(
               Frequency
             }
           ),
-          Definitions
+          Definições: createSwitchNavigator(
+            {
+              Definitions,
+              Registration,
+              Report,
+              Scale,
+              User
+            },
+          )
         },
         {
           defaultNavigationOptions: ({ navigation }) => ({
@@ -65,6 +74,10 @@ const Routes = createAppContainer(
                 return (
                   <Icon name="bars" size={30} color={tintColor} />
                 );
+              } else if (routeName === 'Definições') {
+                return (
+                  <Icon name="setting" size={30} color={tintColor} />
+                )
               } else {
                 return (
                   <Icon name="home" size={30} color={tintColor} />
@@ -77,11 +90,6 @@ const Routes = createAppContainer(
             inactiveTintColor: '#b9b9b9',
           },
         }
-      ),
-      Registration: createSwitchNavigator(
-        {
-          Registration,
-        },
       ),
     },
     {

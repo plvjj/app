@@ -13,7 +13,6 @@ import api from "../../services/api";
 export default class Frequency extends Component {
   state = {
     students: [],
-    frequencies: [],
     date: format(new Date(), 'dd/MM/yyyy'),
     modalVisible: false,
     users: [],
@@ -24,7 +23,6 @@ export default class Frequency extends Component {
   async componentDidMount() {
     const { data } = await api.get("/users");
     const students = await api.get("/student");
-    const frequencies = await api.get("/frequency");
 
     let arrayStudent = []
     students.data.map(student => {
@@ -36,7 +34,9 @@ export default class Frequency extends Component {
       arrayStudent.push(obj)
     })
 
-    this.setState({ users: data, students: arrayStudent, frequencies })
+    this.setState({ users: data, students: arrayStudent })
+
+    console.log(this.state)
 
     BackHandler.addEventListener('backPress', () => {
       if (this.state.modalVisible) {
