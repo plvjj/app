@@ -45,8 +45,7 @@ export default class User extends Component {
           this.props.navigation.navigate('Definitions')
           alert(`Usuário ${resp.data.ok} atualizado`)
         }).catch(error => {
-          // alert(`${error.response.data.error}`)
-          alert(JSON.stringify(error.response))
+          alert(`${error.response.data.error}`)
         })
     } else {
       this.setState({ message: 'Criando usuário', loading: true })
